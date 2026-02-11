@@ -89,6 +89,8 @@ def format_encoded(encoded: Any, encoding: str) -> str:
 
 def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
     if encoding == "uper":
+        if isinstance(raw_text, bytes):
+            raw_text = raw_text.decode("utf-8")
         cleaned = "".join(raw_text.split())
         if cleaned.lower().startswith("0x"):
             cleaned = cleaned[2:]
@@ -124,11 +126,16 @@ def _write_output(output: str, output_path: str | None) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Encode/decode SAE J2735 messages with ASN.1 definitions.")
-    parser.add_argument("--asn1", action="append", required=True, help="ASN.1 file path (repeat or comma-separate).")
+    parser.add_argument(
+        "--asn1",
+        action="append",
+        required=True,
+        help="ASN.1 file path(s). Can be repeated and/or comma-separated.",
+    )
     parser.add_argument(
         "--message",
         required=True,
-        help="Message name or alias (bsm, tim, rsm). Use ASN.1 type names for additional messages.",
+        help="Message name or alias (bsm, tim, rsm, roadsafety). Use ASN.1 type names for additional messages.",
     )
     parser.add_argument("--encoding", choices=["uper", "jer"], default="uper", help="Encoding rules to use.")
     parser.add_argument("--direction", choices=["encode", "decode"], required=True, help="Encode or decode payloads.")
