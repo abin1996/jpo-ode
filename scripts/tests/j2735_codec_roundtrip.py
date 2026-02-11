@@ -21,7 +21,9 @@ def run_roundtrip() -> int:
         "rsm": fixtures_dir / "rsm.json",
     }
 
-    compilers = {encoding: j2735_codec.build_compiler([str(asn1_path)], encoding) for encoding in ("uper", "jer")}
+    compilers = {}
+    for encoding in ("uper", "jer"):
+        compilers[encoding] = j2735_codec.build_compiler([str(asn1_path)], encoding)
     for encoding, compiler in compilers.items():
         for alias, payload_path in payloads.items():
             message_type = j2735_codec.resolve_message_type(alias)

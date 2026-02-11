@@ -77,14 +77,20 @@ def build_compiler(asn1_paths: list[str], encoding: str) -> asn1tools.compiler.C
 
 
 def format_encoded(encoded: Any, encoding: str) -> str:
-    """Format encoded output as a string or raise ValueError for unsupported types."""
+    """Format encoded output as a string.
+
+    Raises:
+        ValueError: If the encoder returns an unsupported output type.
+    """
     if isinstance(encoded, bytes):
         if encoding == "uper":
             return encoded.hex()
         return encoded.decode("utf-8")
     if isinstance(encoded, str):
         return encoded
-    raise ValueError("Encoded output is not a supported type.")
+    raise ValueError(
+        f"Encoded output type {type(encoded).__name__} is not supported. Expected bytes or str."
+    )
 
 
 def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
