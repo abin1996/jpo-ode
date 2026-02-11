@@ -186,7 +186,7 @@ def main() -> int:
     parser.add_argument(
         "--message",
         required=True,
-        help="Message name or alias (bsm, tim, rsm, roadsafety (RSM alias)). Use ASN.1 type names for additional messages.",
+        help="Message name or alias (bsm, tim, rsm/roadsafety). Use ASN.1 type names for additional messages.",
     )
     parser.add_argument("--encoding", choices=["uper", "jer"], default="uper", help="Encoding rules to use.")
     parser.add_argument("--direction", choices=["encode", "decode"], required=True, help="Encode or decode payloads.")
