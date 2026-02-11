@@ -103,6 +103,9 @@ def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
 def encode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, payload: Any, encoding: str) -> str:
     """Encode a payload using the selected ASN.1 compiler and encoding rules.
 
+    Returns:
+        Encoded payload as a string.
+
     Raises:
         ValueError: If the encoder returns an unsupported output type.
     """
