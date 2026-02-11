@@ -101,6 +101,11 @@ def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
 
 
 def encode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, payload: Any, encoding: str) -> str:
+    """Encode a payload using the selected ASN.1 compiler and encoding rules.
+
+    Raises:
+        ValueError: If the encoder returns an unsupported output type.
+    """
     if encoding == "uper":
         payload = convert_hex_strings(payload)
     encoded = compiler.encode(message_type, payload)
@@ -113,6 +118,7 @@ def decode_payload(
     encoded_text: str | bytes,
     encoding: str,
 ) -> Any:
+    """Decode an encoded payload and return JSON-serializable data."""
     decoded = compiler.decode(message_type, parse_encoded_input(encoded_text, encoding))
     return convert_bytes_to_hex(decoded)
 
