@@ -31,7 +31,7 @@ def _flatten_asn1_paths(values: Iterable[str]) -> list[str]:
 
 
 def resolve_message_type(value: str) -> str:
-    if not value or not value.strip():
+    if not value.strip():
         raise ValueError("Message type cannot be empty.")
     normalized = value.strip()
     alias = normalized.lower()
@@ -87,6 +87,13 @@ def build_compiler(asn1_paths: list[str], encoding: str) -> asn1tools.compiler.C
 def format_encoded(encoded: Any, encoding: str) -> str:
     """Format encoded output as a string.
 
+    Args:
+        encoded: Encoded payload from the ASN.1 compiler.
+        encoding: Encoding rules used for the payload.
+
+    Returns:
+        Encoded payload as a string.
+
     Raises:
         ValueError: If the encoder returns an unsupported output type.
     """
@@ -117,6 +124,12 @@ def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
 
 def encode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, payload: Any, encoding: str) -> str:
     """Encode a payload using the selected ASN.1 compiler and encoding rules.
+
+    Args:
+        compiler: ASN.1 compiler to use for encoding.
+        message_type: ASN.1 message name to encode.
+        payload: JSON-like payload to encode.
+        encoding: Encoding rules to use.
 
     Returns:
         Encoded payload as a string.
