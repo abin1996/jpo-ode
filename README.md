@@ -103,7 +103,10 @@ Supported message types:
 5. The script should continue to send the same message every 5 seconds and kafkacat should continue to output the latest message.
 6. You may modify the content of the UDP sender scripts to test different payloads of your own.
 
-For standalone ASN.1 J2735 encoding/decoding (mirroring the asn1_codec module), use `scripts/j2735_codec.py`. The script expects ASN.1 definitions as input (for example, those shipped with the asn1_codec submodule) and requires `asn1tools` to be installed (`pip install asn1tools`). A lightweight round-trip check is available via `scripts/tests/j2735_codec_roundtrip.py` using the fixtures under `scripts/tests/fixtures`.
+For standalone ASN.1 J2735 encoding/decoding (mirroring the asn1_codec module), use `scripts/j2735_codec.py`.
+- Provide ASN.1 definitions as input (for example, those shipped with the asn1_codec submodule).
+- Install `asn1tools` (`pip install asn1tools`).
+- Run `scripts/tests/j2735_codec_roundtrip.py` with the fixtures under `scripts/tests/fixtures` for a lightweight round-trip check.
 
 <p align="center">
   <img src="./docs/images/readme/figure3.png" width="80%" height="50%">

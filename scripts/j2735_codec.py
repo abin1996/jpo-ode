@@ -77,6 +77,7 @@ def build_compiler(asn1_paths: list[str], encoding: str) -> asn1tools.compiler.C
 
 
 def format_encoded(encoded: Any, encoding: str) -> str:
+    """Format encoded output as a string or raise ValueError for unsupported types."""
     if isinstance(encoded, bytes):
         if encoding == "uper":
             return encoded.hex()
@@ -86,7 +87,7 @@ def format_encoded(encoded: Any, encoding: str) -> str:
     raise ValueError("Encoded output is not a supported type.")
 
 
-def parse_encoded_input(raw_text: str, encoding: str) -> Any:
+def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
     if encoding == "uper":
         cleaned = "".join(raw_text.split())
         if cleaned.lower().startswith("0x"):
@@ -104,7 +105,12 @@ def encode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, pay
     return format_encoded(encoded, encoding)
 
 
-def decode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, encoded_text: str, encoding: str) -> Any:
+def decode_payload(
+    compiler: asn1tools.compiler.Compiler,
+    message_type: str,
+    encoded_text: str | bytes,
+    encoding: str,
+) -> Any:
     decoded = compiler.decode(message_type, parse_encoded_input(encoded_text, encoding))
     return convert_bytes_to_hex(decoded)
 
