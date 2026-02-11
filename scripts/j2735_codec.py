@@ -186,11 +186,15 @@ def main() -> int:
     parser.add_argument(
         "--message",
         required=True,
-        help="Message name or alias (bsm, tim, rsm, roadsafety=RSM). Use ASN.1 type names for additional messages.",
+        help="Message name or alias (bsm, tim, rsm, roadsafety as an RSM alias). Use ASN.1 type names for additional messages.",
     )
     parser.add_argument("--encoding", choices=["uper", "jer"], default="uper", help="Encoding rules to use.")
     parser.add_argument("--direction", choices=["encode", "decode"], required=True, help="Encode or decode payloads.")
-    parser.add_argument("--input", required=True, help="JSON file (encode) or encoded text file (decode). Use - for stdin.")
+    parser.add_argument(
+        "--input",
+        required=True,
+        help="JSON file (encode) or encoded text file (decode). Use '-' as the value to read from stdin.",
+    )
     parser.add_argument("--output", help="Optional output file path. Defaults to stdout.")
     parser.add_argument("--pretty", action="store_true", help="Pretty-print decoded JSON output.")
     args = parser.parse_args()
