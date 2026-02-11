@@ -14,7 +14,10 @@ except ModuleNotFoundError:
 
 def build_compilers(asn1_path: Path) -> dict[str, object]:
     """Build one compiler per encoding since asn1tools compilers are codec-specific."""
-    return {encoding: j2735_codec.build_compiler([str(asn1_path)], encoding) for encoding in ("uper", "jer")}
+    return {
+        encoding: j2735_codec.build_compiler([str(asn1_path)], encoding)
+        for encoding in sorted(j2735_codec.SUPPORTED_ENCODINGS)
+    }
 
 
 def run_roundtrip() -> int:
