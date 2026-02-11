@@ -21,9 +21,7 @@ def run_roundtrip() -> int:
         "rsm": fixtures_dir / "rsm.json",
     }
 
-    compilers = {}
-    for encoding in ("uper", "jer"):
-        compilers[encoding] = j2735_codec.build_compiler([str(asn1_path)], encoding)
+    compilers = build_compilers(asn1_path)
     for encoding, compiler in compilers.items():
         for alias, payload_path in payloads.items():
             message_type = j2735_codec.resolve_message_type(alias)
@@ -38,6 +36,11 @@ def run_roundtrip() -> int:
                 return 1
     print("J2735 codec round-trip tests passed.")
     return 0
+
+
+def build_compilers(asn1_path: Path) -> dict[str, object]:
+    """Build one compiler per encoding since asn1tools compilers are codec-specific."""
+    return {encoding: j2735_codec.build_compiler([str(asn1_path)], encoding) for encoding in ("uper", "jer")}
 
 
 if __name__ == "__main__":

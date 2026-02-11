@@ -17,6 +17,7 @@ MESSAGE_ALIASES = {
     "rsm": "RoadSafetyMessage",
     "roadsafety": "RoadSafetyMessage",
 }
+SUPPORTED_ENCODINGS = {"uper", "jer"}
 
 
 def _flatten_asn1_paths(values: Iterable[str]) -> list[str]:
@@ -35,6 +36,13 @@ def resolve_message_type(value: str) -> str:
     normalized = value.strip()
     alias = normalized.lower()
     return MESSAGE_ALIASES.get(alias, normalized)
+
+
+def validate_encoding(encoding: str) -> None:
+    if encoding not in SUPPORTED_ENCODINGS:
+        raise ValueError(
+            f"Unsupported encoding '{encoding}'. Expected one of {sorted(SUPPORTED_ENCODINGS)}."
+        )
 
 
 def load_text(path: str) -> str:
@@ -94,6 +102,7 @@ def format_encoded(encoded: Any, encoding: str) -> str:
 
 
 def parse_encoded_input(raw_text: str | bytes, encoding: str) -> Any:
+    validate_encoding(encoding)
     if encoding == "uper":
         if isinstance(raw_text, bytes):
             raw_text = raw_text.decode("utf-8")
@@ -113,8 +122,9 @@ def encode_payload(compiler: asn1tools.compiler.Compiler, message_type: str, pay
         Encoded payload as a string.
 
     Raises:
-        ValueError: If the encoder returns an unsupported output type.
+        ValueError: If the encoding is unsupported or the encoder returns an unsupported output type.
     """
+    validate_encoding(encoding)
     if encoding == "uper":
         payload = convert_hex_strings(payload)
     encoded = compiler.encode(message_type, payload)
@@ -127,7 +137,20 @@ def decode_payload(
     encoded_text: str | bytes,
     encoding: str,
 ) -> Any:
-    """Decode an encoded payload and return JSON-serializable data."""
+    """Decode an encoded payload and return JSON-serializable data.
+
+    Args:
+        compiler: ASN.1 compiler to use for decoding.
+        message_type: ASN.1 message name to decode.
+        encoded_text: Encoded input payload.
+        encoding: Encoding rules to use.
+
+    Returns:
+        Decoded data with bytes converted to hex strings.
+
+    Raises:
+        ValueError: If the encoding is unsupported.
+    """
     decoded = compiler.decode(message_type, parse_encoded_input(encoded_text, encoding))
     return convert_bytes_to_hex(decoded)
 
