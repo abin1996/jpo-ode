@@ -12,6 +12,11 @@ except ModuleNotFoundError:
     import j2735_codec
 
 
+def build_compilers(asn1_path: Path) -> dict[str, object]:
+    """Build one compiler per encoding since asn1tools compilers are codec-specific."""
+    return {encoding: j2735_codec.build_compiler([str(asn1_path)], encoding) for encoding in ("uper", "jer")}
+
+
 def run_roundtrip() -> int:
     fixtures_dir = Path(__file__).resolve().parent / "fixtures"
     asn1_path = fixtures_dir / "j2735_minimal.asn"
@@ -36,11 +41,6 @@ def run_roundtrip() -> int:
                 return 1
     print("J2735 codec round-trip tests passed.")
     return 0
-
-
-def build_compilers(asn1_path: Path) -> dict[str, object]:
-    """Build one compiler per encoding since asn1tools compilers are codec-specific."""
-    return {encoding: j2735_codec.build_compiler([str(asn1_path)], encoding) for encoding in ("uper", "jer")}
 
 
 if __name__ == "__main__":

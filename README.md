@@ -104,7 +104,7 @@ Supported message types:
 6. You may modify the content of the UDP sender scripts to test different payloads of your own.
 
 For standalone ASN.1 J2735 encoding/decoding (mirroring the asn1_codec module), use `scripts/j2735_codec.py`.
-- Provide ASN.1 definitions as input (for example, from the asn1_codec submodule under `asn1_codec/asn1c_combined` or from <https://github.com/usdot-jpo-ode/asn1_codec>).
+- Provide ASN.1 definitions as input (for example, initialize the `asn1_codec` submodule and use the files under `asn1_codec/asn1c_combined`, or download them from <https://github.com/usdot-jpo-ode/asn1_codec>).
 - Install `asn1tools` (`pip install asn1tools`).
 - Run `scripts/tests/j2735_codec_roundtrip.py` with the fixtures under `scripts/tests/fixtures` for a lightweight round-trip check.
 

@@ -31,8 +31,8 @@ def _flatten_asn1_paths(values: Iterable[str]) -> list[str]:
 
 
 def resolve_message_type(value: str) -> str:
-    if not value:
-        return value
+    if not value or not value.strip():
+        raise ValueError("Message type cannot be empty.")
     normalized = value.strip()
     alias = normalized.lower()
     return MESSAGE_ALIASES.get(alias, normalized)
