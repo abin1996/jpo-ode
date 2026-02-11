@@ -1,0 +1,20 @@
+J2735Minimal DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+BasicSafetyMessage ::= SEQUENCE {
+  msgCnt INTEGER (0..127),
+  id INTEGER (0..65535),
+  speed INTEGER (0..8191)
+}
+
+TravelerInformation ::= SEQUENCE {
+  msgCnt INTEGER (0..127),
+  text UTF8String
+}
+
+RoadSafetyMessage ::= SEQUENCE {
+  msgCnt INTEGER (0..127),
+  description UTF8String
+}
+
+END
